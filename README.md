@@ -1,5 +1,5 @@
 #### EXTERNAL DEPENDENCIES: 
-- Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed
+- Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed globally
 - openssl binary on OSX
 
 ## Example usage:
