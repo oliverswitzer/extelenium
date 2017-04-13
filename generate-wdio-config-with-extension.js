@@ -17,8 +17,8 @@ if(fs.existsSync(`${extensionDirectory}/${extensionName}.pem`)) {
     fs.unlinkSync(`${extensionDirectory}/${extensionName}.pem`);
 }
 
-exec(`crxmake --pack-extension="${extensionFullPath} --extension-output="${extensionDirectory}/${extensionName}.crx"`, (error, stdout, stderr) => {
-    exec(`openssl base64 -in ${extensionDirectory}/${extensionName}.crx`, (err, stdout, stderr) => {
+exec(`crxmake --pack-extension="${extensionFullPath} --extension-output="${extensionDirectory}/${extensionName}.crx"`, () => {
+    exec(`openssl base64 -in ${extensionDirectory}/${extensionName}.crx`, (err, stdout) => {
         const base64CrxFile = stdout.split('\n').map(s => s.trim()).join('');
         const wdioConfig = require(webDriverIOConfigPath);
 
