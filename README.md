@@ -4,5 +4,11 @@
 
 ## Example usage:
 ```
-$ ./scripts/generate-wdio-config-with-extension.js <FULL_PATH_TO_CHROME_EXTENSION_DIRECTORY> <FULL_PATH_TO_WEB_DRIVER_IO_CONFIG_JSON>
+$ ./scripts/generate-wdio-config-with-extension.js <FULL_PATH_TO_CHROME_EXTENSION_DIRECTORY> <FULL_PATH_TO_WDIO_CONF_JS_FILE>
+```
+
+Then run your tests as you would with webdriverio, using the generated wdio-with-extension.conf.json file:
+
+```
+$ ./node_modules/.bin/wdio wdio-with-extension.conf.json
 ```
