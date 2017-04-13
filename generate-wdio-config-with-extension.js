@@ -1,9 +1,5 @@
 #! /usr/bin/env node
 
-// NOTE: Requires crxmake ruby gem to be installed
-// Example usage:
-// $ ./scripts/generate-wdio-config-with-extension.js <FULL_PATH_TO_CHROME_EXTENSION_DIRECTORY> <FULL_PATH_TO_WEB_DRIVER_IO_CONFIG_JSON>
-
 const fs = require('fs');
 const exec = require('child_process').exec;
 const base64 = require('base-64');
