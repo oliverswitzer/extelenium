@@ -5,6 +5,7 @@
 - [openssl binary](https://www.openssl.org/source/)
 
 ## To run integration tests with your chrome extension:
+
 ```
-$ ./scripts/run-integration-tests-with-extension.js <PATH_TO_YOUR_CHROME_EXTENSION_DIRECTORY> <wdio.conf.js_PATH>
+$ ./scripts/run_integration_tests_with_extension.js <PATH_TO_YOUR_CHROME_EXTENSION_DIRECTORY> <wdio.conf.js_PATH>
 ```
