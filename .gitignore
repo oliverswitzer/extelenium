@@ -1,2 +1,5 @@
 .idea
 node_modules
+errorShots
+*.crx
+*.pem

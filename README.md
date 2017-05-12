@@ -4,13 +4,7 @@
 - Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed globally
 - openssl binary on OSX
 
-## Example usage:
+## To run integration tests with your chrome extension:
 ```
-$ ./scripts/generate-wdio-config-with-extension.js <FULL_PATH_TO_CHROME_EXTENSION_DIRECTORY> <FULL_PATH_TO_WDIO_CONF_JS_FILE>
-```
-
-Then run your tests as you would with webdriverio, using the generated wdio-with-extension.conf.json file:
-
-```
-$ ./node_modules/.bin/wdio wdio-with-extension.conf.json
+$ ./scripts/run-integration-tests-with-extension.js <PATH_TO_YOUR_CHROME_EXTENSION_DIRECTORY> <wdio.conf.js_PATH>
 ```
