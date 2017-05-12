@@ -2,7 +2,7 @@
 
 **EXTERNAL DEPENDENCIES**: 
 - Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed globally
-- openssl binary on OSX
+- [openssl binary](https://www.openssl.org/source/)
 
 ## To run integration tests with your chrome extension:
 ```
