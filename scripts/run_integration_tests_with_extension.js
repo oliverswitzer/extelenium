@@ -4,18 +4,23 @@ const path = require('path')
 const Launcher = require('webdriverio').Launcher
 
 const ExtensionConverter = require('../lib/extension_converter')
+const WdioLauncherFactory = require('../lib/wdio_launcher_factory')
 
 const chromeExtensionPath = process.argv[2]
-const webDriverIOConfigPath = process.argv[3]
+const wdioConfigFilePath = path.resolve(process.argv[3])
+
 const extensionConverter = new ExtensionConverter({chromeExtensionPath})
+const wdioLauncherFactory = new WdioLauncherFactory({wdioConfigFilePath})
 
 extensionConverter
   .toCrxFile()
   .then(extensionConverter.toBase64String)
   .then(convertedExtension => {
-    const wdioConfig = require(path.resolve(webDriverIOConfigPath))
+    const launcher = wdioLauncherFactory.withExtensionLoaded({
+      encodedExtension: convertedExtension
+    })
 
-    getConfiguredWdioLauncher(wdioConfig, convertedExtension).run().then(code => {
+    launcher.run().then(code => {
       process.exit(code)
     }, (error) => {
       console.error('Launcher failed to start the test: ', error.stacktrace)
@@ -23,23 +28,3 @@ extensionConverter
     })
   })
   .then(extensionConverter.cleanCrxAndPemFiles)
-
-const addChromeExtensionToBrowserCapabilities = function (existingCapabilities, formattedBase64CrxString) {
-  return existingCapabilities.chromeOptions = {
-    extensions: [
-      formattedBase64CrxString
-    ]
-  }
-}
-
-const existingCapabilities = function (wdioConfig) {
-  return wdioConfig.config.capabilities[0]
-}
-
-const getConfiguredWdioLauncher = function (wdioConfig, formattedBase64CrxString) {
-  return new Launcher(path.resolve(webDriverIOConfigPath), {
-    capabilities: [
-      addChromeExtensionToBrowserCapabilities(existingCapabilities(wdioConfig), formattedBase64CrxString)
-    ]
-  })
-}
