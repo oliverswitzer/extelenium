@@ -1,21 +1,12 @@
 #! /usr/bin/env node
 
-const fs = require('fs')
 const path = require('path')
-const util = require('util')
-const webdriverio = require('webdriverio')
-const Launcher = webdriverio.Launcher
+const Launcher = require('webdriverio').Launcher
 
 const ExtensionConverter = require('../lib/extension_converter')
 
 const chromeExtensionPath = process.argv[2]
 const webDriverIOConfigPath = process.argv[3]
-
-const extensionDirectory = path.dirname(chromeExtensionPath)
-const extensionName = path.basename(chromeExtensionPath)
-
-cleanConvertedExtensionFiles(extensionDirectory, extensionName)
-
 const extensionConverter = new ExtensionConverter({chromeExtensionPath})
 
 extensionConverter
@@ -51,13 +42,4 @@ const getConfiguredWdioLauncher = function (wdioConfig, formattedBase64CrxString
       addChromeExtensionToBrowserCapabilities(existingCapabilities(wdioConfig), formattedBase64CrxString)
     ]
   })
-}
-
-function cleanConvertedExtensionFiles(extensionDirectory, extensionName) {
-  if (fs.existsSync(`${extensionDirectory}/${extensionName}.crx`)) {
-    fs.unlinkSync(`${extensionDirectory}/${extensionName}.crx`)
-  }
-  if (fs.existsSync(`${extensionDirectory}/${extensionName}.pem`)) {
-    fs.unlinkSync(`${extensionDirectory}/${extensionName}.pem`)
-  }
 }
