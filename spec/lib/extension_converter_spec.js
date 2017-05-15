@@ -3,7 +3,7 @@ import ExtensionConverter from '../../lib/extension_converter'
 describe('ExtensionConverter', () => {
   const EMPTY_STDERR = undefined, EMPTY_STDOUT = undefined
 
-  let extensionConverter, execWrapperSpy, pathWrapperSpy, execWrapperCalls
+  let extensionConverter, execWrapperSpy, pathWrapperSpy, execWrapperCalls, fsWrapperSpy
 
   beforeEach(() => {
     execWrapperCalls = []
@@ -13,10 +13,15 @@ describe('ExtensionConverter', () => {
 
     pathWrapperSpy = {basename: jasmine.createSpy('basename').and.returnValue('extension')}
 
+    fsWrapperSpy = {
+      removeSync: jasmine.createSpy('removeSync')
+    }
+
     extensionConverter = new ExtensionConverter({
       chromeExtensionPath: '/some/path/to/chrome/extension',
       execWrapper: execWrapperSpy,
-      pathWrapper: pathWrapperSpy
+      pathWrapper: pathWrapperSpy,
+      fsWrapper: fsWrapperSpy
     })
   })
 
@@ -75,6 +80,26 @@ describe('ExtensionConverter', () => {
         })
 
         execWrapperCalls[0].callback(EMPTY_STDERR, 'some base64 encoded crx string')
+      })
+    })
+  })
+
+  describe('cleanCrxAndPemFiles', () => {
+    describe('removes extension.crx file', () => {
+      it('removes "extension.crx" file', () => {
+        extensionConverter.cleanCrxAndPemFiles()
+
+        expect(fsWrapperSpy.removeSync).toHaveBeenCalledWith(
+          jasmine.stringMatching('extension.crx')
+        )
+      })
+
+      it('removes "extension.pem" file', () => {
+        extensionConverter.cleanCrxAndPemFiles()
+
+        expect(fsWrapperSpy.removeSync).toHaveBeenCalledWith(
+          jasmine.stringMatching('extension.pem')
+        )
       })
     })
   })

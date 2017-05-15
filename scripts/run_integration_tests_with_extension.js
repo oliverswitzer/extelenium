@@ -8,6 +8,7 @@ const Launcher = webdriverio.Launcher
 
 const execWrapper = require('../util/execWrapper')
 const pathWrapper = require('../util/pathWrapper')
+const fsWrapper = require('../util/fsWrapper')
 const ExtensionConverter = require('../lib/extension_converter')
 
 
@@ -22,7 +23,8 @@ cleanConvertedExtensionFiles(extensionDirectory, extensionName)
 const extensionConverter = new ExtensionConverter({
   chromeExtensionPath,
   execWrapper,
-  pathWrapper
+  pathWrapper,
+  fsWrapper
 })
 
 extensionConverter
@@ -38,6 +40,7 @@ extensionConverter
       process.exit(1)
     })
   })
+  .then(extensionConverter.cleanCrxAndPemFiles)
 
 const addChromeExtensionToBrowserCapabilities = function (existingCapabilities, formattedBase64CrxString) {
   return existingCapabilities.chromeOptions = {
