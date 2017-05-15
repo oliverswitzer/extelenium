@@ -1,13 +1,19 @@
 #! /usr/bin/env node
 
 const path = require('path')
-const Launcher = require('webdriverio').Launcher
+const argv = require('yargs').usage(`
+Example Usage:
+ 
+run_integration_tests_with_extension -c wdio.conf.js -e extension-directory/
+run_integration_tests_with_extension --config wdio.conf.js --extension extension-directory/`
+).argv;
 
+const Launcher = require('webdriverio').Launcher
 const ExtensionConverter = require('../lib/extension_converter')
 const WdioLauncherFactory = require('../lib/wdio_launcher_factory')
 
-const chromeExtensionPath = process.argv[2]
-const wdioConfigFilePath = path.resolve(process.argv[3])
+const chromeExtensionPath = argv.extension || argv.e
+const wdioConfigFilePath = path.resolve(argv.config) || path.resolve(argv.c)
 
 const extensionConverter = new ExtensionConverter({chromeExtensionPath})
 const wdioLauncherFactory = new WdioLauncherFactory({wdioConfigFilePath})
