@@ -8,50 +8,43 @@ const Launcher = webdriverio.Launcher
 
 const execWrapper = require('../util/execWrapper')
 const pathWrapper = require('../util/pathWrapper')
-const ExtensionLoader = require('../lib/extension_loader')
-
+const ExtensionConverter = require('../lib/extension_converter')
 
 
 const chromeExtensionPath = process.argv[2]
 const webDriverIOConfigPath = process.argv[3]
-
 
 const extensionDirectory = path.dirname(chromeExtensionPath)
 const extensionName = pathWrapper.basename(chromeExtensionPath)
 
 cleanConvertedExtensionFiles(extensionDirectory, extensionName)
 
-const extensionLoader = new ExtensionLoader({
+const extensionConverter = new ExtensionConverter({
   chromeExtensionPath,
   execWrapper,
   pathWrapper
 })
 
-extensionLoader.load().then(base64CrxString => {
-  const formattedBase64CrxString = removeReturnCharactersAndWhitespace(base64CrxString)
-  const wdioConfig = require(path.resolve(webDriverIOConfigPath))
+extensionConverter
+  .toCrxFile()
+  .then(extensionConverter.toBase64String)
+  .then(convertedExtension => {
+    const wdioConfig = require(path.resolve(webDriverIOConfigPath))
 
-  getConfiguredWdioLauncher(wdioConfig, formattedBase64CrxString).run().then(function (code) {
-    process.exit(code)
-  }, function (error) {
-    console.error('Launcher failed to start the test: ', error.stacktrace)
-    process.exit(1)
+    getConfiguredWdioLauncher(wdioConfig, convertedExtension).run().then(code => {
+      process.exit(code)
+    }, (error) => {
+      console.error('Launcher failed to start the test: ', error.stacktrace)
+      process.exit(1)
+    })
   })
-});
 
-
-const removeReturnCharactersAndWhitespace = function (base64CrxString) {
-  return base64CrxString.split('\n').map(s => s.trim()).join('')
-}
-
-const addChromeExtensionToBrowserCapabilities = function (capabilitiesWithExtension, formattedBase64CrxString) {
-  capabilitiesWithExtension.chromeOptions = {
+const addChromeExtensionToBrowserCapabilities = function (existingCapabilities, formattedBase64CrxString) {
+  return existingCapabilities.chromeOptions = {
     extensions: [
       formattedBase64CrxString
     ]
   }
-
-  return capabilitiesWithExtension
 }
 
 const existingCapabilities = function (wdioConfig) {
@@ -65,7 +58,6 @@ const getConfiguredWdioLauncher = function (wdioConfig, formattedBase64CrxString
     ]
   })
 }
-
 
 function cleanConvertedExtensionFiles(extensionDirectory, extensionName) {
   if (fs.existsSync(`${extensionDirectory}/${extensionName}.crx`)) {
