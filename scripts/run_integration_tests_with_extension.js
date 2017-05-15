@@ -6,26 +6,17 @@ const util = require('util')
 const webdriverio = require('webdriverio')
 const Launcher = webdriverio.Launcher
 
-const execWrapper = require('../util/execWrapper')
-const pathWrapper = require('../util/pathWrapper')
-const fsWrapper = require('../util/fsWrapper')
 const ExtensionConverter = require('../lib/extension_converter')
-
 
 const chromeExtensionPath = process.argv[2]
 const webDriverIOConfigPath = process.argv[3]
 
 const extensionDirectory = path.dirname(chromeExtensionPath)
-const extensionName = pathWrapper.basename(chromeExtensionPath)
+const extensionName = path.basename(chromeExtensionPath)
 
 cleanConvertedExtensionFiles(extensionDirectory, extensionName)
 
-const extensionConverter = new ExtensionConverter({
-  chromeExtensionPath,
-  execWrapper,
-  pathWrapper,
-  fsWrapper
-})
+const extensionConverter = new ExtensionConverter({chromeExtensionPath})
 
 extensionConverter
   .toCrxFile()
