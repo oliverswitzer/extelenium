@@ -2,12 +2,31 @@
 
 **EXTERNAL DEPENDENCIES**: 
 - Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed globally
-- [openssl binary](https://www.openssl.org/source/)
+- [openssl binary](https://www.openssl.org/source/) - already installed on Mac OSX
 
-## To run integration tests with your chrome extension:
+Specify the use of chrome for running your integration tests in your `wdio.conf.js` file:
+```
+exports.config = {
+    ...
+    capabilities: [{
+        ...
+        browserName: 'chrome'
+        ...
+    }]
+}
+```
+
+Install necessary external dependency:
 
 ```
-$ ./scripts/run_integration_tests_with_extension.js <PATH_TO_YOUR_CHROME_EXTENSION_DIRECTORY> <wdio.conf.js_PATH>
+$ gem install crxmake
+```
+
+(This is used for packaging your chrome extension into crx files programmatically)
+
+Use this command to run tests with your extension loaded:
+```
+$ ./scripts/run_integration_tests_with_extension.js my-sample-extension/ wdio.conf.js
 ```
 
 ## Setup for local Development
