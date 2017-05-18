@@ -1,10 +1,29 @@
-## A utility to make continuous testing of chrome extensions using Webdriver.io easy
+# Extelenium
+### A utility to make integration testing of chrome extensions using Webdriver.io easy
+
+Do ever ask yourself questions like "do I have a purpose on this earth?" Or, "why am I writing a chrome extension?" or 
+"how the hell am I supposed to test this thing?"
+
+Try existentialenium! `extelenium` for short.
+
+
+#### How it works:
+
+Give it the directory to your chrome extension containing a `manifest.json`, and it will programmatically 
+load it into a browser instance launched by [Webdriver.io](http://webdriver.io/). It is a useful tool if you want to run integration tests continually without having to do terrible 
+things to your wdio.conf.js every time you make a change to your extension.
+
 
 **EXTERNAL DEPENDENCIES**: 
 - Requires [crxmake](https://github.com/Constellation/crxmake) ruby gem to be installed globally
 - [openssl binary](https://www.openssl.org/source/) - already installed on Mac OSX
 
-Specify the use of chrome for running your integration tests in your `wdio.conf.js` file:
+**PEER DEPENDENCIES**:
+- [webdriverio](https://www.npmjs.com/package/webdriverio)
+
+After [installing webdriverio](http://webdriver.io/guide/getstarted/install.html), specify the use of chrome 
+for running your integration tests in your `wdio.conf.js` file:
+
 ```
 exports.config = {
     ...
@@ -16,17 +35,17 @@ exports.config = {
 }
 ```
 
-Install necessary external dependency:
+Install a necessary external dependency:
 
 ```
 $ gem install crxmake
 ```
 
-(This is used for packaging your chrome extension into crx files programmatically)
+(This is used for packaging your chrome extension into crx files)
 
 Use this command to run tests with your extension loaded:
 ```
-$ ./scripts/run_integration_tests_with_extension.js my-sample-extension/ wdio.conf.js
+$ ./scripts/extelenium.js -e my-sample-extension/ -c wdio.conf.js
 ```
 
 ## Setup for local Development

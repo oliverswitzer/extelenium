@@ -6,8 +6,17 @@ const Launcher = require('webdriverio').Launcher
 const ExtensionConverter = require('../lib/extension_converter')
 const WdioLauncherFactory = require('../lib/wdio_launcher_factory')
 
-const chromeExtensionPath = process.argv[2]
-const wdioConfigFilePath = path.resolve(process.argv[3])
+const yargs = require('yargs')
+  .usage('Usage: $0 [options]')
+  .example('extelenium -e extension/ -c wdio.conf.js', 'Launch wdio test runner with chrome extension loaded')
+  .describe('e, --extension', 'path to extension containing manifest.json (Required)')
+  .describe('c, --wdio-config', 'path to your wdio.conf.js file (Required)')
+  .help()
+  .argv
+
+
+const chromeExtensionPath = yargs.e || yargs.extension
+const wdioConfigFilePath = yargs.c || yargs.wdioConfig
 
 const extensionConverter = new ExtensionConverter({chromeExtensionPath})
 const wdioLauncherFactory = new WdioLauncherFactory({wdioConfigFilePath})
