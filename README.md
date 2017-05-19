@@ -22,7 +22,9 @@ things to your wdio.conf.js every time you make a change to your extension.
 - [webdriverio](https://www.npmjs.com/package/webdriverio)
 
 ## Usage
-**1)** Update your `package.json` to include extelenium as a devDependency and run `npm install`
+**1)** Install extelenium 
+
+`npm install --save-dev extelenium`
 
 **2)** [Install webdriverio](http://webdriver.io/guide/getstarted/install.html)
 
