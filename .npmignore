@@ -1,1 +1,6 @@
-my-sample-extension
+my-sample-extension/
+spec/
+.babelrc
+errorShots
+wdio.conf.js
+.idea
