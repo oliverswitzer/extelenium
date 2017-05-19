@@ -3,3 +3,4 @@ node_modules
 errorShots
 *.crx
 *.pem
+npm-debug.log
