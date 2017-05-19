@@ -21,8 +21,12 @@ things to your wdio.conf.js every time you make a change to your extension.
 **PEER DEPENDENCIES**:
 - [webdriverio](https://www.npmjs.com/package/webdriverio)
 
-After [installing webdriverio](http://webdriver.io/guide/getstarted/install.html), specify the use of chrome 
-for running your integration tests in your `wdio.conf.js` file:
+## Usage
+**1)** Update your `package.json` to include extelenium as a devDependency and run `npm install`
+
+**2)** [Install webdriverio](http://webdriver.io/guide/getstarted/install.html)
+
+**3)** Specify the use of chrome for running your integration tests in your `wdio.conf.js` file:
 
 ```
 exports.config = {
@@ -35,17 +39,17 @@ exports.config = {
 }
 ```
 
-Install a necessary external dependency:
+**4)** Install a necessary external dependency:
 
 ```
 $ gem install crxmake
 ```
 
-(This is used for packaging your chrome extension into crx files)
+(This is used for programmatically packaging your chrome extension into crx files)
 
-Use this command to run tests with your extension loaded:
+**5)** Use provided script to run your integration tests with your extension loaded
 ```
-$ ./scripts/extelenium.js -e my-sample-extension/ -c wdio.conf.js
+$ ./node_modules/.bin/extelenium -e my-sample-extension/ -c wdio.conf.js
 ```
 
 ## Setup for local Development
