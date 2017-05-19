@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-const path = require('path')
 const Launcher = require('webdriverio').Launcher
 
 const ExtensionConverter = require('../lib/extension_converter')
@@ -9,8 +8,16 @@ const WdioLauncherFactory = require('../lib/wdio_launcher_factory')
 const yargs = require('yargs')
   .usage('Usage: $0 [options]')
   .example('extelenium -e extension/ -c wdio.conf.js', 'Launch wdio test runner with chrome extension loaded')
-  .describe('e, --extension', 'path to extension containing manifest.json (Required)')
-  .describe('c, --wdio-config', 'path to your wdio.conf.js file (Required)')
+  .option('extension', {
+    alias: 'e',
+    describe: 'path to extension containing your manifest.json'
+  })
+  .option('wdio-config', {
+    alias: 'c',
+    describe: 'path to your wdio.conf.js file'
+  })
+  .demandOption(['e'], 'please provide extension path')
+  .demandOption(['c'], 'please provide wdio.conf.js config path')
   .help()
   .argv
 
