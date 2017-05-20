@@ -49,10 +49,17 @@ $ gem install crxmake
 
 (This is used for programmatically packaging your chrome extension into crx files)
 
-**5)** Use provided script to run your integration tests with your extension loaded
+**5)** In a separate terminal, run a selenium server that wdio can talk to (which you should have installed during step 2)
 ```
-$ ./node_modules/.bin/extelenium -e my-sample-extension/ -c wdio.conf.js
+$ selenium-standalone start
 ```
+
+**6)** Use provided script to run your integration tests with your extension loaded
+```
+$ ./node_modules/.bin/extelenium --extension my-sample-extension/ --wdio-config wdio.conf.js
+```
+
+---
 
 ## Setup for local Development
 
