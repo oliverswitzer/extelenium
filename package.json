@@ -1,7 +1,7 @@
 {
   "name": "extelenium",
   "description": "A webdriverio wrapper that allows you to feature test your chrome plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/oliverswitzer/extelenium",
   "author": "Oliver Switzer (http://github.com/oliverswitzer)",
   "license": "ISC",
