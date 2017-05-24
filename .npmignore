@@ -1,4 +1,4 @@
-my-sample-extension/
+spec/support/fixtures/sample-extension/
 spec/
 .babelrc
 errorShots

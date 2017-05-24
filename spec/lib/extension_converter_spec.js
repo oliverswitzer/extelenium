@@ -3,7 +3,8 @@ import ExtensionConverter from '../../lib/extension_converter'
 describe('ExtensionConverter', () => {
   const EMPTY_STDERR = undefined, EMPTY_STDOUT = undefined
 
-  let extensionConverter, execWrapperSpy, pathWrapperSpy, execWrapperCalls, fsWrapperSpy
+  let extensionConverter, execWrapperSpy,
+    execWrapperCalls, fsWrapperSpy
 
   beforeEach(() => {
     execWrapperCalls = []
@@ -11,16 +12,14 @@ describe('ExtensionConverter', () => {
       execWrapperCalls.push({command, callback})
     })
 
-    pathWrapperSpy = {basename: jasmine.createSpy('basename').and.returnValue('extension')}
+    const chromeExtensionPath = 'spec/support/fixtures/sample-extension/'
 
     fsWrapperSpy = {
       removeSync: jasmine.createSpy('removeSync')
     }
-
     extensionConverter = new ExtensionConverter({
-      chromeExtensionPath: '/some/path/to/chrome/extension',
+      chromeExtensionPath,
       execWrapper: execWrapperSpy,
-      pathWrapper: pathWrapperSpy,
       fsWrapper: fsWrapperSpy
     })
   })
@@ -30,16 +29,28 @@ describe('ExtensionConverter', () => {
       extensionConverter.toCrxFile()
 
       expect(execWrapperSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching('crxmake --pack-extension=/some/path/to/chrome/extension'), jasmine.any(Function)
+        jasmine.stringMatching('crxmake --pack-extension=spec/support/fixtures/sample-extension/'), jasmine.any(Function)
       )
     })
 
-    it('calls crxmake binary with output of crx file using base path of chrome extension', () => {
-      extensionConverter.toCrxFile()
+    describe('crx file output name', () => {
+      it('uses chrome extension name in the manifest file', () => {
+        extensionConverter.toCrxFile()
 
-      expect(execWrapperSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching('--extension-output=extension.crx'), jasmine.any(Function)
-      )
+        expect(execWrapperSpy).toHaveBeenCalledWith(
+          jasmine.stringMatching('--extension-output=some-extension-name.crx'), jasmine.any(Function)
+        )
+      })
+    })
+
+    describe('pem file output name', () => {
+      it('uses chrome extension name in the manifest file', () => {
+        extensionConverter.toCrxFile()
+
+        expect(execWrapperSpy).toHaveBeenCalledWith(
+          jasmine.stringMatching('--key-output=some-extension-name.pem'), jasmine.any(Function)
+        )
+      })
     })
 
     describe('crxmake command fails', () => {
@@ -64,11 +75,11 @@ describe('ExtensionConverter', () => {
 
   describe('toBase64String', () => {
     describe('after crx file is generated', () => {
-      it('tries to read "extension.crx" as base64 with openssl', () => {
+      it('tries to read "some-extension-name.crx" as base64 with openssl', () => {
         extensionConverter.toBase64String()
 
         expect(execWrapperSpy).toHaveBeenCalledWith(
-          jasmine.stringMatching('openssl base64 -in extension.crx'), jasmine.any(Function)
+          jasmine.stringMatching('openssl base64 -in some-extension-name.crx'), jasmine.any(Function)
         )
       })
 
@@ -85,20 +96,20 @@ describe('ExtensionConverter', () => {
   })
 
   describe('cleanCrxAndPemFiles', () => {
-    describe('removes extension.crx file', () => {
-      it('removes "extension.crx" file', () => {
+    describe('removes .crx file', () => {
+      it('removes some-extension-name.crx file', () => {
         extensionConverter.cleanCrxAndPemFiles()
 
         expect(fsWrapperSpy.removeSync).toHaveBeenCalledWith(
-          jasmine.stringMatching('extension.crx')
+          jasmine.stringMatching('some-extension-name.crx')
         )
       })
 
-      it('removes "extension.pem" file', () => {
+      it('removes .pem file', () => {
         extensionConverter.cleanCrxAndPemFiles()
 
         expect(fsWrapperSpy.removeSync).toHaveBeenCalledWith(
-          jasmine.stringMatching('extension.pem')
+          jasmine.stringMatching('some-extension-name.pem')
         )
       })
     })
