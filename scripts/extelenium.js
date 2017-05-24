@@ -32,8 +32,19 @@ extensionConverter
   .toCrxFile()
   .then(extensionConverter.toBase64String)
   .then(convertedExtension => {
-    const launcher = wdioLauncherFactory.withExtensionLoaded({
-      encodedExtension: convertedExtension
+    debugger;
+    const launcher = new Launcher(wdioConfigFilePath, {
+      capabilities: [
+        // wdioLauncherFactory._addNewCapability({
+        {
+          maxInstances: 5,
+          browserName: 'chrome',
+          chromeOptions: {
+            extensions: [convertedExtension]
+          }
+        }
+        // })
+      ]
     })
 
     launcher.run().then(code => {
